@@ -1,247 +1,202 @@
-# College Connect Backend API
+# College LMS - Learning Management System
 
-Backend server for the College Connect Learning Management System built with Node.js, Express, TypeScript, and MongoDB.
+A comprehensive, role-based Learning Management System built with React, TypeScript, and Tailwind CSS.
 
 ## Features
 
-- **JWT Authentication** with role-based access control
-- **RESTful API** for all LMS entities
-- **MongoDB** database with Mongoose ODM
-- **File Upload** support for course materials
-- **Pagination & Search** for all list endpoints
-- **Role-based Authorization** (Admin, Faculty, Student, Parent)
-- **Automatic Grade Calculation** for marks
-- **Fee Payment Tracking** with status management
+### Core Functionality
+- **Role-Based Access Control**: Four distinct user roles (Admin, Faculty, Student, Parent)
+- **Batch Management**: Organize students by academic batches and passing years
+- **Department Management**: Manage academic departments and their structures
+- **Course Catalog**: Comprehensive course management with credits, categories, and descriptions
+- **Regulation Management**: Define curriculum regulations and map courses to semesters
+- **Class Management**: Create and manage class offerings with faculty assignments
+- **Student Marks**: Track and manage student performance across assessments
+- **Fee Management**: Monitor fee structures, payments, and outstanding balances
+- **Course Materials**: Upload and share learning materials with visibility controls
+- **CSV/Excel Bulk Upload**: Import data in bulk for efficient management
 
-## Prerequisites
+### User Roles & Permissions
 
-- Node.js 18+ and npm
-- MongoDB 4.4+ (running locally or remote connection string)
+#### Admin
+- Full access to all management features
+- Create and manage batches, departments, courses, regulations, and classes
+- Assign faculty to classes and designate advisors
+- Manage student enrollments and fee structures
+- Bulk upload via CSV/Excel
+- View comprehensive analytics and reports
 
-## Installation
+#### Faculty
+- View assigned classes and student rosters
+- Upload course materials (publicly visible for courses)
+- Enter and manage marks for students in their classes
+- Access advisor panel (if assigned as advisor)
+- View student fee details (read-only)
 
-1. **Navigate to server directory:**
-   ```bash
-   cd server
-   ```
+#### Student
+- View personal academic records and marks
+- Access course materials for enrolled classes
+- Track fee payment status and history
+- View semester progress and attendance
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+#### Parent
+- Monitor child's academic performance
+- View marks, course materials, and fee status
+- Receive notifications about academic updates
+- Access read-only student information
 
-3. **Set up environment variables:**
-   
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and configure:
-   ```env
-   PORT=3000
-   MONGODB_URI=mongodb://localhost:27017/college-connect
-   JWT_SECRET=your-secret-key
-   FRONTEND_URL=http://localhost:8080
-   ```
+## Tech Stack
 
-4. **Start MongoDB:**
-   
-   If running locally:
-   ```bash
-   mongod
-   ```
-
-## Running the Server
-
-### Development Mode
-```bash
-npm run dev
-```
-
-Server will start on `http://localhost:3000` with auto-reload on file changes.
-
-### Production Mode
-```bash
-npm run build
-npm start
-```
-
-### Seed Demo Data
-```bash
-npm run seed
-```
-
-This creates demo users and sample data for testing.
-
-## Demo Credentials
-
-After running the seed script, use these credentials:
-
-- **Admin**: `admin@college.edu` / `admin123`
-- **Faculty**: `faculty@college.edu` / `faculty123`
-- **Student**: `student@college.edu` / `student123`
-- **Parent**: `parent@college.edu` / `parent123`
-
-## API Endpoints
-
-All endpoints are prefixed with `/api`. Most endpoints require authentication via JWT token in the `Authorization` header:
-
-```
-Authorization: Bearer <token>
-```
-
-### Authentication
-- `POST /api/auth/login` - Login with email/password, returns JWT token
-- `GET /api/auth/profile` - Get current user profile (requires auth)
-
-### Batches (Admin only for write)
-- `GET /api/batches` - List all batches (with pagination)
-- `POST /api/batches` - Create new batch
-- `PUT /api/batches/:id` - Update batch
-- `DELETE /api/batches/:id` - Delete batch
-
-### Departments (Admin only for write)
-- `GET /api/departments`
-- `POST /api/departments`
-- `PUT /api/departments/:id`
-- `DELETE /api/departments/:id`
-
-### Courses (Admin only for write)
-- `GET /api/courses`
-- `POST /api/courses`
-- `PUT /api/courses/:id`
-- `DELETE /api/courses/:id`
-
-### Regulations (Admin only for write)
-- `GET /api/regulations`
-- `POST /api/regulations`
-- `PUT /api/regulations/:id`
-- `DELETE /api/regulations/:id`
-
-### Classes (Admin only for write)
-- `GET /api/classes`
-- `POST /api/classes`
-- `PUT /api/classes/:id`
-- `DELETE /api/classes/:id`
-
-### Faculty (Admin only for write)
-- `GET /api/faculty`
-- `POST /api/faculty`
-- `PUT /api/faculty/:id`
-- `DELETE /api/faculty/:id`
-
-### Students (Admin only for write)
-- `GET /api/students`
-- `POST /api/students`
-- `PUT /api/students/:id`
-- `DELETE /api/students/:id`
-
-### Marks (Faculty & Admin can write)
-- `GET /api/marks` - List all marks
-- `POST /api/marks` - Create/update marks
-- `GET /api/marks/student/:studentId` - Get marks for a student
-- `GET /api/marks/class/:classId` - Get marks for a class
-
-### Fees (Admin only for write)
-- `GET /api/fees` - List fees
-- `POST /api/fees` - Create fee structure
-- `PUT /api/fees/:id` - Update fee
-- `POST /api/fees/:id/payment` - Record payment
-- `GET /api/fees/student/:studentId` - Get student fees
-
-### Course Materials (Faculty & Admin can upload)
-- `GET /api/materials` - List materials
-- `POST /api/materials` - Upload material (multipart/form-data with 'file' field)
-- `GET /api/materials/course/:courseId` - Get materials for a course
-- `DELETE /api/materials/:id` - Delete material
-
-### Query Parameters
-
-List endpoints support:
-- `page` - Page number (default: 1)
-- `limit` - Items per page (default: 25)
-- `search` - Search term (where applicable)
-
-Example: `GET /api/courses?page=1&limit=10&search=database`
-
-### File Upload
-
-For file upload (course materials), use `multipart/form-data`:
-
-```bash
-curl -X POST http://localhost:3000/api/materials \
-  -H "Authorization: Bearer <token>" \
-  -F "file=@document.pdf" \
-  -F "courseId=<course-id>" \
-  -F "title=Lecture Notes" \
-  -F "visibility=public"
-```
+- **Frontend**: React 18 with TypeScript
+- **Routing**: React Router v6
+- **State Management**: React Context + hooks
+- **UI Components**: shadcn/ui component library
+- **Styling**: Tailwind CSS with custom design tokens
+- **Forms**: React Hook Form with validation
+- **Data Fetching**: TanStack Query (React Query)
+- **Notifications**: Sonner for toast notifications
+- **Icons**: Lucide React
+- **Build Tool**: Vite
 
 ## Project Structure
 
 ```
-server/
-├── src/
-│   ├── models/          # Mongoose models
-│   ├── controllers/     # Route controllers
-│   ├── routes/          # Express routes
-│   ├── middleware/      # Auth, error handling
-│   ├── utils/           # Seed data, utilities
-│   ├── app.ts           # Express app setup
-│   └── server.ts        # Entry point
-├── .env                 # Environment variables
-├── .env.example         # Environment template
-├── package.json
-└── tsconfig.json
+src/
+├── components/
+│   ├── layout/           # Layout components (AppLayout, RoleGuard)
+│   └── ui/               # Reusable UI components (shadcn/ui)
+├── contexts/             # React contexts (AuthContext)
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions and API client
+├── pages/                # Page components organized by role
+│   ├── admin/            # Admin pages
+│   ├── faculty/          # Faculty pages
+│   ├── student/          # Student pages
+│   └── parent/           # Parent pages
+├── types/                # TypeScript type definitions
+└── App.tsx               # Main app component with routing
 ```
 
-## Error Handling
+## Getting Started
 
-The API returns errors in this format:
+### Prerequisites
+- Node.js 18+ and npm installed
+- Backend API server running (see API documentation)
 
-```json
-{
-  "message": "Error description"
-}
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd college-lms
 ```
 
-Common HTTP status codes:
-- `200` - Success
-- `201` - Created
-- `400` - Bad Request / Validation Error
-- `401` - Unauthorized (invalid/missing token)
-- `403` - Forbidden (insufficient permissions)
-- `404` - Not Found
-- `500` - Internal Server Error
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Testing with Frontend
+3. Set up environment variables:
+Create a `.env` file in the root directory:
+```
+VITE_API_BASE_URL=http://localhost:3000/api
+```
 
-1. Start the backend server (port 3000)
-2. Start the frontend (port 8080)
-3. Login via frontend UI
-4. Navigate through different pages to test CRUD operations
+4. Start the development server:
+```bash
+npm run dev
+```
 
-## Notes
+The app will be available at `http://localhost:8080`
 
-- All passwords are hashed using bcrypt before storage
-- JWT tokens expire after 7 days
-- File uploads are stored in the `./uploads` directory
-- MongoDB indexes ensure unique emails, roll numbers, and course codes
-- Marks are auto-graded based on total score
+## Demo Credentials
 
-## Troubleshooting
+For testing purposes, use these credentials:
 
-**MongoDB Connection Error:**
-- Ensure MongoDB is running: `mongod`
-- Check connection string in `.env`
+- **Admin**: admin@college.edu / admin123
+- **Faculty**: faculty@college.edu / faculty123
+- **Student**: student@college.edu / student123
+- **Parent**: parent@college.edu / parent123
 
-**Port Already in Use:**
-- Change PORT in `.env` to another port
+## API Integration
 
-**CORS Issues:**
-- Update FRONTEND_URL in `.env` to match your frontend URL
+The frontend expects a REST API with the following endpoints:
+
+### Authentication
+- `POST /auth/login` - User login
+- `GET /auth/profile` - Get current user profile
+
+### Core Entities
+- `/batches` - Batch CRUD operations
+- `/departments` - Department CRUD operations
+- `/courses` - Course CRUD operations
+- `/regulations` - Regulation CRUD operations
+- `/classes` - Class CRUD operations
+- `/faculty` - Faculty management
+- `/students` - Student management
+- `/marks` - Marks management
+- `/fees` - Fee management
+- `/materials` - Course materials
+
+All list endpoints support pagination with `?page=1&limit=25&search=...`
+
+## Features to be Implemented
+
+The following features are planned for future releases:
+
+- [ ] Regulation management UI
+- [ ] Complete class management with faculty assignment
+- [ ] Marks entry and CSV import
+- [ ] Fee payment recording
+- [ ] Course materials upload
+- [ ] Bulk CSV/Excel upload page
+- [ ] Faculty advisor assignment workflow
+- [ ] Advanced filtering and search
+- [ ] Activity logs and audit trail
+- [ ] Email notifications
+- [ ] Mobile responsive enhancements
+- [ ] Offline support
+- [ ] Export to PDF/Excel
+
+## Design System
+
+The app uses a comprehensive design system with:
+- Semantic color tokens for light/dark mode support
+- Consistent spacing and typography
+- Accessible components following WCAG guidelines
+- Responsive layouts for mobile, tablet, and desktop
+
+## Development Guidelines
+
+### Adding New Pages
+1. Create page component in appropriate role folder
+2. Add route in `App.tsx` with `RoleGuard`
+3. Update navigation in `AppLayout.tsx`
+4. Add API endpoints in `lib/api.ts`
+
+### State Management
+- Use React Context for global state (auth, theme)
+- Use TanStack Query for server state
+- Use local state for component-specific data
+
+### Styling
+- Use Tailwind utility classes
+- Reference design tokens from `index.css`
+- Never use direct colors (e.g., `text-white`, `bg-black`)
+- Create component variants when needed
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+The optimized build will be in the `dist` directory.
 
 ## License
 
-This project is part of the College Connect LMS.
+This project is part of a college management system.
+
+## Support
+
+For issues and questions, please contact the development team.
